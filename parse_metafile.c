@@ -7,6 +7,10 @@
 #include "parse_metafile.h"
 #include "sha1.h"
 
+
+#include <openssl/sha.h>
+
+
 char  *metafile_content = NULL; // 保存种子文件的内容
 long  filesize;                 // 种子文件的长度
 
@@ -398,17 +402,16 @@ int get_info_hash()
 		}
 	if(i == filesize)  return -1;
 
-	SHA1_CTX context;
-	SHA1Init(&context);
-	SHA1Update(&context, &metafile_content[begin], end-begin+1);
-	SHA1Final(info_hash, &context);
+    unsigned char digest[SHA_DIGEST_LENGTH];
+    char string[] = "hello world";
 
-#ifdef DEBUG
+    SHA1((unsigned char*)&metafile_content[begin], end - begin  + 1, (unsigned char*)info_hash);
+
+
 	printf("info_hash:");
 	for(i = 0; i < 20; i++)  
 		printf("%.2x ",info_hash[i]);
 	printf("\n");
-#endif
 
 	return 0;
 }

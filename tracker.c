@@ -128,10 +128,10 @@ int create_request(char *request,int len,Announce_list *node,
 	get_tracker_port(node,&tracker_port);
 
 	sprintf(request,
-	"GET /announce?info_hash=%s&peer_id=%s&port=%u"
+	"GET /ann?uk=WfEC75JFfA&info_hash=%s&peer_id=%s&port=%u"
 	"&uploaded=%lld&downloaded=%lld&left=%lld"
 	"&event=started&key=%d&compact=1&numwant=%d HTTP/1.0\r\n"
-	"Host: %s\r\nUser-Agent: Bittorrent\r\nAccept: */*\r\n"
+	"Host: %s\r\nUser-Agent: BitComet/1.51.6.12\r\nAccept: */*\r\n"
 	"Accept-Encoding: gzip\r\nConnection: closed\r\n\r\n",
 	encoded_info_hash,encoded_peer_id,port,up,down,left,
 	key,numwant,tracker_name);
