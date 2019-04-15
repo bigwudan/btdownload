@@ -31,6 +31,7 @@ file_metafile_init(char *file_name)
         file_content[i] = fgetc(file);
     }
     file_metafile_get_announce_list();
+	file_metafile_get_files_info();
     return 1;
 }
 
@@ -104,8 +105,58 @@ file_metafile_get_announce_list()
     return 1;
 }
 
+//
+int
+file_metafile_get_files_info()
+{
+	int pos_cur = 0;
+	file_metafile_find_key("d5:filesl", 0, &pos_cur);
+	pos_cur += 9;
+	int file_len = 0;
+	int file_name_len = 0;
+	char file_name[60] = {0};
+	while(1){
+		//skip d6:length
+		pos_cur += 9;
+		
+		//skip i
+		pos_cur++;
+		file_len = 0;
+		file_name_len = 0;
+		memset(file_name, 0, sizeof(file_name));
+		while(file_content[pos_cur] != 'e'  ){
+			file_len = file_len*10 + file_content[pos_cur] - '0';
+			pos_cur++;
+		}
+			
+		//skip e
+		pos_cur++;
+
+		//skip 4:pathl
+		pos_cur += 7;
+
+		while(file_content[pos_cur] != ':'  ){
+			file_name_len = file_name_len*10 + file_content[pos_cur] - '0';
+			pos_cur++;
+		}
+		
+		//skip :
+		pos_cur++;
+
+		//printf("file_len=%d\n", file_name_len);
+		//exit(1);
+		memmove(file_name,&file_content[pos_cur], file_name_len);
+		
+		//skip ..
+		pos_cur +=13;
+		printf("test=%s\n", &file_content[pos_cur]);
+		exit(1);
+
+	
+	
+	
+	}
 
 
 
-
-
+}
