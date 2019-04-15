@@ -12,6 +12,13 @@ unsigned char *file_content = NULL;
 long long file_size = 0;
 //announce 头文件
 announce *announce_head = NULL;
+//
+filedowninfo *filedowninfo_head = NULL;
+
+piece *piece_list = NULL;
+
+
+int piece_length = 0;
 
 
 //读取文件
@@ -116,6 +123,7 @@ file_metafile_get_files_info()
 	int file_name_len = 0;
 	char file_name[60] = {0};
 	while(1){
+		if(file_content[pos_cur] == 'e') break;
 		//skip d6:length
 		pos_cur += 9;
 		
@@ -147,16 +155,67 @@ file_metafile_get_files_info()
 		//exit(1);
 		memmove(file_name,&file_content[pos_cur], file_name_len);
 		
+		if(filedowninfo_head == NULL){
+			filedowninfo_head = calloc(sizeof(filedowninfo), 1);
+			filedowninfo_head->fd = 0;
+			filedowninfo_head->file_len = file_len;
+			memmove(filedowninfo_head->file_name, &file_content[pos_cur], file_name_len);
+		}else{
+			filedowninfo *p = filedowninfo_head;
+			while(p->next) p = p->next;	
+			filedowninfo *q = calloc(sizeof(filedowninfo), 1);
+			q->fd = 0;
+			q->file_len = file_len;
+			memmove(q->file_name, &file_content[pos_cur], file_name_len);
+			p->next = q;
+		}
 		//skip ..
-		pos_cur +=13;
-		printf("test=%s\n", &file_content[pos_cur]);
-		exit(1);
+		pos_cur +=file_name_len+2;
+	}
+	
+	//piece_length
+	piece_length = 0;
+	int pos_beg = pos_cur;
+	file_metafile_find_key("piece lengthi", pos_beg, &pos_cur);
+	pos_cur += 13;
 
+	while( file_content[pos_cur] != 'e' ){
+		piece_length = piece_length*10 + file_content[pos_cur] - '0';
+		pos_cur++;
+	}
+	//skip e
+	pos_cur++;
+
+
+	//hask
+	int pieces = 0;
+	int piece_count = 0;
+	pos_beg = pos_cur;	
+	file_metafile_find_key("6:pieces", pos_beg, &pos_cur);
+	pos_cur += 8;
+
+	while( file_content[pos_cur] != ':' ){
+		pieces = pieces*10 + file_content[pos_cur] - '0';
+		pos_cur++;
+	}
+	piece_count = pieces / 20;
 	
+	piece_list = calloc(sizeof(piece), piece_count);
+	//skip :
+	pos_cur++;
 	
-	
+	for(int i = 0; i < piece_count; i++){
+		memmove(piece_list[i].hash, &file_content[pos_cur], 20);	
+		pos_cur += 20;
 	}
 
+	/*filedowninfo *tmp = filedowninfo_head;
+	while(tmp){
+		printf("len=%d, name=%s\n", tmp->file_len, tmp->file_name);
+		tmp = tmp->next;
+	
+	}*/
+	return 1;
 
 
 }

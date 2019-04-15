@@ -20,6 +20,13 @@ typedef struct _file_down_info{
 
 }filedowninfo;
 
+typedef struct _piece{
+	char hash[20];
+
+
+}piece;
+
+
 
 
 
