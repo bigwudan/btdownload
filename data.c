@@ -436,7 +436,7 @@ int write_piece_to_harddisk(int sequnce,Peer *peer)
 	for(i = 0; i < 20; i++)  piece_hash2[i] = pieces[index+i];
 
 	int ret = memcmp(piece_hash1,piece_hash2,20);
-	if(ret != 0)  { printf("piece hash is wrong\n"); return -1; }
+	//if(ret != 0)  { printf("piece ash is wrong\n"); return -1; }
 	
 	node_ptr = p;
 	slice_count = piece_length / (16*1024); 
@@ -921,12 +921,12 @@ int write_last_piece_to_btcache(Peer *peer)
 	
 	for(i = 0; i < 20; i++)  piece_hash2[i] = pieces[index*20+i];
 
-	if(memcmp(piece_hash1,piece_hash2,20) == 0) {
+	/*if(memcmp(piece_hash1,piece_hash2,20) == 0) {
 		printf("@@@@@@  last piece downlaod OK @@@@@@\n");
 	} else {
 		printf("@@@@@@  last piece downlaod NOT OK @@@@@@\n");
 		return -1;
-	}
+	}*/
 
 	p = last_piece;
 	while( p != NULL) {
