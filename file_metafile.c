@@ -4,6 +4,9 @@
 #include <fcntl.h>
 
 
+
+#include <openssl/sha.h>
+
 #include "file_metafile.h"
 
 //文件内容指针
@@ -16,6 +19,9 @@ announce *announce_head = NULL;
 filedowninfo *filedowninfo_head = NULL;
 
 piece *piece_list = NULL;
+
+
+unsigned char info_hash[20];
 
 
 int piece_length = 0;
@@ -39,6 +45,7 @@ file_metafile_init(char *file_name)
     }
     file_metafile_get_announce_list();
 	file_metafile_get_files_info();
+    get_info_hash();
     return 1;
 }
 
@@ -216,6 +223,58 @@ file_metafile_get_files_info()
 	
 	}*/
 	return 1;
-
-
 }
+
+int 
+get_info_hash()
+{
+    int pos_cur = 0;
+    int pos_end = 0;
+    int push_num = 0;
+    file_metafile_find_key("4:info", 0, &pos_cur);
+    int i = pos_cur+6;
+    int len = 0;
+    while(i < file_size){
+        if(file_content[i] == 'd'){
+            push_num++;
+        //处理字符   
+        }else if(file_content[i] >= 48 && file_content[i] <= 57){
+            len = 0;
+            //skip num:
+            while(file_content[i] != ':'){
+                len = len*10 + file_content[i] - '0';
+                i++;
+            }
+            //skip :
+            i++;
+            //skip len
+            i += len;
+            continue;
+         //列表   
+        }else if( file_content[i] == 'l'  ){
+            push_num++;
+            
+        //数字    
+        }else if( file_content[i] == 'i' ){
+            //skip i
+            while(file_content[i] != 'e'){
+               i++; 
+            }
+            //skip e
+            i++;
+            continue;
+        }else if(file_content[i] == 'e'){
+            push_num--;
+            if(push_num == 0){
+                pos_end = i;         
+                break;
+            }
+        }        
+        i++;
+    }
+    pos_cur = pos_cur+6;
+    SHA1((unsigned char*)&file_content[pos_cur], pos_end - pos_cur + 1, (unsigned char*)info_hash);
+    return 1;
+}
+
+

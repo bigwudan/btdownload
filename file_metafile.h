@@ -23,10 +23,10 @@ typedef struct _file_down_info{
 typedef struct _piece{
 	char hash[20];
 
-
 }piece;
 
 
+int get_info_hash();
 
 
 
