@@ -25,6 +25,7 @@ unsigned char info_hash[20];
 
 
 int piece_length = 0;
+int piece_count = 0;
 
 
 //读取文件
@@ -196,7 +197,6 @@ file_metafile_get_files_info()
 
 	//hask
 	int pieces = 0;
-	int piece_count = 0;
 	pos_beg = pos_cur;	
 	file_metafile_find_key("6:pieces", pos_beg, &pos_cur);
 	pos_cur += 8;

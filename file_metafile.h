@@ -29,6 +29,23 @@ typedef struct _piece{
 int get_info_hash();
 
 
+//文件内容指针
+extern unsigned char *file_content ;
+//文件尺寸
+extern long long file_size; 
+//announce 头文件
+extern announce *announce_head ;
+//
+extern filedowninfo *filedowninfo_head; 
+
+extern piece *piece_list; 
+
+
+extern unsigned char info_hash[20];
+
+
+extern int piece_length ;
+extern int piece_count ;
 
 
 #endif
