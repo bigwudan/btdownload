@@ -1,0 +1,48 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+_BTMAP_H_	btmap.h	2;"	d
+_FILE_METAFILE_H_	file_metafile.h	2;"	d
+_MESSAGE_H_	message.h	2;"	d
+_announce	file_metafile.h	/^typedef struct _announce{$/;"	s
+_file_down_info	file_metafile.h	/^typedef struct _file_down_info{$/;"	s
+_piece	file_metafile.h	/^typedef struct _piece{$/;"	s
+announce	file_metafile.h	/^}announce;$/;"	t	typeref:struct:_announce
+announce_head	file_metafile.c	/^announce *announce_head = NULL;$/;"	v
+btmap_get_val	btmap.c	/^int btmap_get_val(int val){$/;"	f
+btmap_init	btmap.c	/^int btmap_init()$/;"	f
+btmap_list	btmap.c	/^unsigned char *btmap_list = NULL;$/;"	v
+btmap_set	btmap.c	/^int btmap_set(int val)$/;"	f
+char_to_int	message.c	/^int char_to_int(unsigned int *index, const unsigned char *buff)$/;"	f
+create_chock_interested_msg	message.c	/^int create_chock_interested_msg(int type,char *buff)$/;"	f
+create_handshake_msg	message.c	/^int create_handshake_msg(char *buff, unsigned char *hash, char *peer_id)$/;"	f
+create_have_msg	message.c	/^int create_have_msg(int index, char *buff)$/;"	f
+create_keep_alive_msg	message.c	/^int create_keep_alive_msg(char *buff)$/;"	f
+fd	file_metafile.h	/^	int fd;$/;"	m	struct:_file_down_info
+file_content	file_metafile.c	/^unsigned char *file_content = NULL;$/;"	v
+file_len	file_metafile.h	/^	long file_len;$/;"	m	struct:_file_down_info
+file_metafile_find_key	file_metafile.c	/^file_metafile_find_key(char *key,const int pos_beg, int *pos_cur)$/;"	f
+file_metafile_get_announce_list	file_metafile.c	/^file_metafile_get_announce_list()$/;"	f
+file_metafile_get_files_info	file_metafile.c	/^file_metafile_get_files_info()$/;"	f
+file_metafile_init	file_metafile.c	/^file_metafile_init(char *file_name)$/;"	f
+file_name	file_metafile.h	/^	char file_name[60];$/;"	m	struct:_file_down_info
+file_size	file_metafile.c	/^long long file_size = 0;$/;"	v
+filedowninfo	file_metafile.h	/^}filedowninfo;$/;"	t	typeref:struct:_file_down_info
+filedowninfo_head	file_metafile.c	/^filedowninfo *filedowninfo_head = NULL;$/;"	v
+get_info_hash	file_metafile.c	/^get_info_hash()$/;"	f
+hash	file_metafile.h	/^	char hash[20];$/;"	m	struct:_piece
+host	file_metafile.h	/^    char host[100];$/;"	m	struct:_announce
+http_encode	message.c	/^int http_encode(const unsigned char *dsc, int dsc_len, char *src){$/;"	f
+info_hash	file_metafile.c	/^unsigned char info_hash[20];$/;"	v
+int_to_char	message.c	/^int int_to_char(int index,unsigned char *buff)$/;"	f
+main	main.c	/^int main(){$/;"	f
+message_track	message.c	/^int message_track(announce *announce_node,unsigned char *buff, unsigned char *hash, unsigned char *peer_id, int port, long uploaded, long downloaded,$/;"	f
+next	file_metafile.h	/^	struct _file_down_info *next;$/;"	m	struct:_file_down_info	typeref:struct:_file_down_info::_file_down_info
+next	file_metafile.h	/^    struct _announce *next;$/;"	m	struct:_announce	typeref:struct:_announce::_announce
+piece	file_metafile.h	/^}piece;$/;"	t	typeref:struct:_piece
+piece_count	file_metafile.c	/^int piece_count = 0;$/;"	v
+piece_length	file_metafile.c	/^int piece_length = 0;$/;"	v
+piece_list	file_metafile.c	/^piece *piece_list = NULL;$/;"	v
