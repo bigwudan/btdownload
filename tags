@@ -16,6 +16,11 @@ btmap_get_val	btmap.c	/^int btmap_get_val(int val){$/;"	f
 btmap_init	btmap.c	/^int btmap_init()$/;"	f
 btmap_list	btmap.c	/^unsigned char *btmap_list = NULL;$/;"	v
 btmap_set	btmap.c	/^int btmap_set(int val)$/;"	f
+char_to_int	message.c	/^int char_to_int(unsigned int *index, const unsigned char *buff)$/;"	f
+create_chock_interested_msg	message.c	/^int create_chock_interested_msg(int type,char *buff)$/;"	f
+create_handshake_msg	message.c	/^int create_handshake_msg(char *buff, unsigned char *hash, char *peer_id)$/;"	f
+create_have_msg	message.c	/^int create_have_msg(int index, char *buff)$/;"	f
+create_keep_alive_msg	message.c	/^int create_keep_alive_msg(char *buff)$/;"	f
 fd	file_metafile.h	/^	int fd;$/;"	m	struct:_file_down_info
 file_content	file_metafile.c	/^unsigned char *file_content = NULL;$/;"	v
 file_len	file_metafile.h	/^	long file_len;$/;"	m	struct:_file_down_info
@@ -32,6 +37,7 @@ hash	file_metafile.h	/^	char hash[20];$/;"	m	struct:_piece
 host	file_metafile.h	/^    char host[100];$/;"	m	struct:_announce
 http_encode	message.c	/^int http_encode(const unsigned char *dsc, int dsc_len, char *src){$/;"	f
 info_hash	file_metafile.c	/^unsigned char info_hash[20];$/;"	v
+int_to_char	message.c	/^int int_to_char(int index,unsigned char *buff)$/;"	f
 main	main.c	/^int main(){$/;"	f
 message_track	message.c	/^int message_track(announce *announce_node,unsigned char *buff, unsigned char *hash, unsigned char *peer_id, int port, long uploaded, long downloaded,$/;"	f
 next	file_metafile.h	/^	struct _file_down_info *next;$/;"	m	struct:_file_down_info	typeref:struct:_file_down_info::_file_down_info

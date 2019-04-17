@@ -19,7 +19,8 @@ int main(){
     char peer_id[20] = {0};
 
     message_track(announce_head, buf, info_hash, peer_id, 888, 0,0,0,1   );
-
+    memset(buf, 0, 1400);
+    create_handshake_msg(buf, info_hash, peer_id);
 
 }
 
