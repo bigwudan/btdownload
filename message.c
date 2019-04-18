@@ -9,10 +9,10 @@
 
 int int_to_char(int index,unsigned char *buff)
 {
-    c[3] = i%256;
-    c[2] = (i-c[3])/256%256;
-    c[1] = (i-c[3]-c[2]*256)/256/256%256;
-    c[0] = (i-c[3]-c[2]*256-c[1]*256*256)/256/256/256%256;
+    buff[3] = index%256;
+    buff[2] = (index-buff[3])/256%256;
+    buff[1] = (index-buff[3]-buff[2]*256)/256/256%256;
+    buff[0] = (index-buff[3]-buff[2]*256-buff[1]*256*256)/256/256/256%256;
     return 0;
 }
 
@@ -123,10 +123,40 @@ int create_have_msg(int index, char *buff)
     buff[7] = p[2];
     buff[8] = p[3];
     return 1;
-
-
-
 }
+
+int create_bitfield_msg(char *bitfield,int bitfield_len, char *buff)
+{
+    unsigned char p[4] = {0};
+    int_to_char(bitfield_len+1, p);
+    memmove(buff, p, 4);
+    buff[4] = 5;
+    memmove(&buff[5], bitfield, bitfield_len);
+    return 1;
+}
+
+int create_request_msg(int index,int begin,int length, char *buff)
+{
+    int i =0;
+    buff[3] = 13;
+    buff[4] = 6;
+    unsigned char c[4] = {0};
+    int_to_char(index, c);
+    i = 5;
+    memmove(&buff[i], c, 4);
+    memset(c, 0, 4);
+    int_to_char(begin, c );
+    i += 4;
+    memmove(&buff[i], c, 4);
+    memset(c, 0, 4);
+    int_to_char(length, c );
+    i += 4;
+    memmove(&buff[i], c, 4);
+    memset(c, 0, 4);
+    return 0;
+}
+
+
 
 
 
