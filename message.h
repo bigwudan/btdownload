@@ -22,4 +22,12 @@ extern int create_bitfield_msg(char *bitfield,int bitfield_len, char *buff);
 
 extern int create_request_msg(int index,int begin,int length, char *buff);
 
+extern int create_piece_msg(int index,int begin,char *block,int b_len,char *buff);
+int create_cancel_msg(int index,int begin,int length,char *buff);
+
+
+int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len);
+
+int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len);
+
 #endif

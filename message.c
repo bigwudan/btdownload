@@ -156,6 +156,128 @@ int create_request_msg(int index,int begin,int length, char *buff)
     return 0;
 }
 
+int create_piece_msg(int index,int begin,char *block,int b_len,char *buff)
+{
+    unsigned char c[4] = {0};
+    int_to_char(b_len+9, c);
+    memmove(buff, c, 4);
+    *(buff+4) = 7;
+    int_to_char(index, c);
+    memmove(buff+5, c, 4);
+    int_to_char(begin, c);
+    memmove(buff+9, c, 4);
+    memmove(buff+13, block, b_len);
+    return 0;
+}
+
+
+int create_cancel_msg(int index,int begin,int length,char *buff)
+{
+    *(buff+3) = 13;
+    *(buff+4) = 8;
+    unsigned char c[4] = {0};
+    int_to_char(index, c);
+    memmove(buff+5, c, 4);
+    int_to_char(begin, c);
+    memmove(buff+9, c, 4);
+    int_to_char(length, c);
+    memmove(buff+13, c, 4);
+    return 0;
+}
+
+int create_port_msg(int port,char *buff)
+{
+    *(buff + 3) = 3;
+    *(buff + 4) = 9;
+    unsigned char c[4] = {0};
+    int_to_char(port, c);
+    *(buff + 5) = c[2];
+    *(buff+6) = c[3];
+    return 0;
+}
+
+int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len)
+{
+    unsigned int   i;
+    char           btkeyword[20];
+
+    unsigned char  keep_alive[4]   = { 0x0, 0x0, 0x0, 0x0 };
+    unsigned char  chocke[5]       = { 0x0, 0x0, 0x0, 0x1, 0x0};
+    unsigned char  unchocke[5]     = { 0x0, 0x0, 0x0, 0x1, 0x1};
+    unsigned char  interested[5]   = { 0x0, 0x0, 0x0, 0x1, 0x2};
+    unsigned char  uninterested[5] = { 0x0, 0x0, 0x0, 0x1, 0x3};
+    unsigned char  have[5]         = { 0x0, 0x0, 0x0, 0x5, 0x4};
+    unsigned char  request[5]      = { 0x0, 0x0, 0x0, 0xd, 0x6};
+    unsigned char  cancel[5]       = { 0x0, 0x0, 0x0, 0xd, 0x8};
+    unsigned char  port[5]         = { 0x0, 0x0, 0x0, 0x3, 0x9};
+
+    if(buff==NULL || len<=0 || ok_len==NULL)  return -1;
+    *ok_len = 0;
+
+    btkeyword[0] = 19;
+    memcpy(&btkeyword[1],"BitTorrent protocol",19);  // BitTorrentЭ��ؼ���
+
+    unsigned char  c[4];
+    unsigned int   length;
+    while(*ok_len < len){
+        if( memcmp(      &buff[*ok_len], keep_alive, 4    )  == 0   ){
+            *ok_len += 4;
+            continue;
+
+        }else if(  memcmp(&buff[*ok_len], chocke, 5  ) == 0 ){
+            *ok_len +=5;
+            continue;
+        }else if(memcmp(&buff[*ok_len], unchocke, 5) == 0){
+            *ok_len +=5;
+            continue;
+
+        }else if( memcmp(&buff[*ok_len], interested, 5) == 0  ){
+            *ok_len +=5;
+            continue;
+
+        }else if(memcmp(&buff[*ok_len], uninterested, 5) ==0   ){
+            *ok_len +=5;
+            continue;
+        }else if(memcmp(&buff[*ok_len], have, 5) ==0 ){
+            *ok_len +=5;
+            continue;
+        }else if(memcmp(&buff[*ok_len],  request, 5) == 0){
+            *ok_len +=5;
+            continue;
+        }else if(memcmp(&buff[*ok_len], cancel, 5) == 0){
+            *ok_len +=5;
+            continue;
+        }else if(memcmp(&buff[*ok_len], port, 5) == 0){
+            *ok_len +=5;
+            continue;
+        }else{
+            length = 0;
+            char_to_int(&length, buff+*ok_len);
+            //bt
+            if(buff[*ok_len+4] == 5 ||  buff[*ok_len + 4] == 7){
+                if( (len - *ok_len) < length +4  ){
+                    return 0;
+                }else{
+                    *ok_len += 4 + length;
+                }
+            }else{
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
