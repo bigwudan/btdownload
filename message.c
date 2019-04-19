@@ -274,25 +274,23 @@ int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len)
 
 int process_handshake_msg(Peer *peer,unsigned char *buff,int len)
 {
-    if(buff[0] != 19 
-            &&  memcmp(buff+1, "BitTorrent protocol", 19 ) !=0 && memcmp(buff+28, info_hash, 20) != 0 ) {
+
+    if(peer == NULL || buff == NULL) return -1;
+    if(memcmp(buff+28, info_hash, 20)){
+        peer->state = CLOSING;
+        return -1;
     }
-    
-        
-    memmove(peer->id, buff+48, 20  );
-    peer->state = HALFSHAKED;
-    
-    create_handshake_msg(peer->in_buff + peer->buff_len,info_hash, peer->id  );
-
-
-
-
-    return 1;
-
-
-
-
-
+    memcpy(peer->id, buff+48, 20);
+    *(peer->id+20) = '\0';
+    if(peer->state == INITIAL){
+        peer->state = HALFSHAKED;
+        create_handshake_msg(peer->in_buff + peer->buff_len,info_hash, peer->id  );
+    }
+    if(peer->state == HALFSHAKED){
+        peer->state = HANDSHAKED;
+    }
+    peer->start_timestamp = time(NULL);
+    return 0;
 }
 
 
