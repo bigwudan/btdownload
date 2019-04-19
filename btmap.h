@@ -7,4 +7,5 @@ int btmap_get_val(int val);
 extern unsigned char *btmap_list ;
 extern unsigned int bitmap_len ;
 extern unsigned int bitmap_valid_len ;
+extern int is_interested(char *dst,char *src);
 #endif

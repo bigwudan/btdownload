@@ -10,8 +10,6 @@ extern int message_track(announce *announce_node,unsigned char *buff, unsigned c
 
 extern int create_handshake_msg(char *buff, unsigned char *hash, char *peer_id);
 extern int create_keep_alive_msg(char *buff);
-extern int create_keep_alive_msg(char *buff);
-extern int create_have_msg(int index, char *buff);
 extern int create_have_msg(int index, char *buff);
 extern int int_to_char(int index, unsigned char *buff);
 extern int char_to_int(unsigned int *index, const unsigned char *buff);
@@ -32,4 +30,5 @@ int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len);
 void discard_send_buffer(Peer *peer);
 int process_handshake_msg(Peer *peer,unsigned char *buff,int len);
 
+int process_choke_msg(Peer *peer,unsigned char *buff,int len);
 #endif

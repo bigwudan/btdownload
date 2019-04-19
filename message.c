@@ -284,7 +284,7 @@ int process_handshake_msg(Peer *peer,unsigned char *buff,int len)
     *(peer->id+20) = '\0';
     if(peer->state == INITIAL){
         peer->state = HALFSHAKED;
-        create_handshake_msg(peer->in_buff + peer->buff_len,info_hash, peer->id  );
+        create_handshake_msg(peer->out_msg+peer->msg_len,info_hash, peer->id  );
     }
     if(peer->state == HALFSHAKED){
         peer->state = HANDSHAKED;
@@ -306,6 +306,54 @@ void discard_send_buffer(Peer *peer)
     }
 }
 
+int process_keep_alive_msg(Peer *peer,unsigned char *buff,int len)
+{
+    if(peer==NULL || buff==NULL)  return -1;
+    peer->start_timestamp = time(NULL);
+    return 0;
+}
+
+
+int process_choke_msg(Peer *peer,unsigned char *buff,int len)
+{
+    if(peer==NULL || buff==NULL)  return -1;
+    if( peer->state!=CLOSING && peer->peer_choking==0 ) {
+        peer->peer_choking = 1;
+        peer->last_down_timestamp = 0;
+        peer->down_count          = 0;
+        peer->down_rate           = 0;
+    }
+    peer->start_timestamp = time(NULL);
+    return 0;
+}
+
+
+int process_unchoke_msg(Peer *peer,unsigned char *buff,int len)
+{
+
+    if(peer==NULL || buff==NULL)  return -1;
+    if(peer->state != CLOSING && peer->peer_choking == 1){
+        peer->peer_choking = 0;
+        if(peer->am_interested == 1){
+        
+            create_req_sle();
+        
+        }else{
+            
+        
+        }
+
+
+
+
+    
+    
+    }
+
+
+
+
+}
 
 
 
