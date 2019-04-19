@@ -14,6 +14,6 @@ extern int create_keep_alive_msg(char *buff);
 extern int create_keep_alive_msg(char *buff);
 extern int create_have_msg(int index, char *buff);
 extern int create_have_msg(int index, char *buff);
-extern int int_to_char(int index, char *buff);
+extern int int_to_char(int index, unsigned char *buff);
 extern int char_to_int(unsigned int *index, const unsigned char *buff);
 #endif

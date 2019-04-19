@@ -9,10 +9,11 @@
 
 int int_to_char(int index,unsigned char *buff)
 {
-    c[3] = i%256;
-    c[2] = (i-c[3])/256%256;
-    c[1] = (i-c[3]-c[2]*256)/256/256%256;
-    c[0] = (i-c[3]-c[2]*256-c[1]*256*256)/256/256/256%256;
+	unsigned char c[4] = {0};
+    c[3] = index%256;
+    c[2] = (index-c[3])/256%256;
+    c[1] = (index-c[3]-c[2]*256)/256/256%256;
+    c[0] = (index-c[3]-c[2]*256-c[1]*256*256)/256/256/256%256;
     return 0;
 }
 
@@ -72,6 +73,9 @@ int message_track(announce *announce_node,unsigned char *buff, unsigned char *ha
             "Accept-Encoding: gzip\r\nConnection: closed\r\n\r\n",
             p, encoded_info_hash, encoded_info_hash,port, uploaded, downloaded, life,key,numwant, host 
            );
+
+
+
     return 1;
 }
 
@@ -91,6 +95,7 @@ int create_handshake_msg(char *buff, unsigned char *hash, char *peer_id)
     p++;
     memmove(p, hash, 20);
     memmove(p+20, peer_id, 20);
+
     return 1;
 }
 
