@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/socket.h>
+
+
 
 #include "message.h"
 #include "file_metafile.h"
+#include "peer.h"
 
 
 
@@ -267,6 +271,46 @@ int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len)
     }
     return 0;
 }
+
+int process_handshake_msg(Peer *peer,unsigned char *buff,int len)
+{
+    if(buff[0] != 19 
+            &&  memcmp(buff+1, "BitTorrent protocol", 19 ) !=0 && memcmp(buff+28, info_hash, 20) != 0 ) {
+    }
+    
+        
+    memmove(peer->id, buff+48, 20  );
+    peer->state = HALFSHAKED;
+    
+    create_handshake_msg(peer->in_buff + peer->buff_len,info_hash, peer->id  );
+
+
+
+
+    return 1;
+
+
+
+
+
+}
+
+
+void discard_send_buffer(Peer *peer)
+{
+    struct linger  lin;
+    int            lin_len;
+    lin.l_onoff  = 1;
+    lin.l_linger = 0;
+    lin_len      = sizeof(lin);
+    if(peer->socket > 0) {
+        setsockopt(peer->socket,SOL_SOCKET,SO_LINGER,(char *)&lin,lin_len);
+    }
+}
+
+
+
+
 
 
 
