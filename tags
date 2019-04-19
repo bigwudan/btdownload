@@ -4,25 +4,57 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CLOSING	peer.h	19;"	d
+DATA	peer.h	18;"	d
+HALFSHAKED	peer.h	14;"	d
+HANDSHAKED	peer.h	15;"	d
+INITIAL	peer.h	13;"	d
+MSG_SIZE	peer.h	22;"	d
+Peer	peer.h	/^} Peer;$/;"	t	typeref:struct:_Peer
+RECVBITFIELD	peer.h	17;"	d
+Request_piece	peer.h	/^} Request_piece;$/;"	t	typeref:struct:_Request_piece
+Request_piece_head	peer.h	/^    Request_piece  *Request_piece_head;   $/;"	m	struct:_Peer
+Requested_piece_head	peer.h	/^    Request_piece  *Requested_piece_head; $/;"	m	struct:_Peer
+SENDBITFIELD	peer.h	16;"	d
 _BTMAP_H_	btmap.h	2;"	d
 _FILE_METAFILE_H_	file_metafile.h	2;"	d
 _MESSAGE_H_	message.h	2;"	d
+_PEER_H_	peer.h	2;"	d
+_Peer	peer.h	/^typedef struct  _Peer {$/;"	s
+_Request_piece	peer.h	/^typedef struct _Request_piece {$/;"	s
 _announce	file_metafile.h	/^typedef struct _announce{$/;"	s
 _file_down_info	file_metafile.h	/^typedef struct _file_down_info{$/;"	s
 _piece	file_metafile.h	/^typedef struct _piece{$/;"	s
+add_peer_node	peer.c	/^Peer* add_peer_node()$/;"	f
+am_choking	peer.h	/^    int            am_choking;            $/;"	m	struct:_Peer
+am_interested	peer.h	/^    int            am_interested;         $/;"	m	struct:_Peer
 announce	file_metafile.h	/^}announce;$/;"	t	typeref:struct:_announce
 announce_head	file_metafile.c	/^announce *announce_head = NULL;$/;"	v
+begin	peer.h	/^    int     begin;                $/;"	m	struct:_Request_piece
+bitmap	peer.h	/^    unsigned char  *bitmap;                $/;"	m	struct:_Peer
+bitmap_len	btmap.c	/^unsigned int bitmap_len = 0;$/;"	v
+bitmap_valid_len	btmap.c	/^unsigned int bitmap_valid_len = 0;$/;"	v
 btmap_get_val	btmap.c	/^int btmap_get_val(int val){$/;"	f
 btmap_init	btmap.c	/^int btmap_init()$/;"	f
 btmap_list	btmap.c	/^unsigned char *btmap_list = NULL;$/;"	v
 btmap_set	btmap.c	/^int btmap_set(int val)$/;"	f
+buff_len	peer.h	/^    int            buff_len;              $/;"	m	struct:_Peer
+cancel_request_list	peer.c	/^int cancel_request_list(Peer *node)$/;"	f
+cancel_requested_list	peer.c	/^int cancel_requested_list(Peer *node)$/;"	f
 char_to_int	message.c	/^int char_to_int(unsigned int *index, const unsigned char *buff)$/;"	f
 create_bitfield_msg	message.c	/^int create_bitfield_msg(char *bitfield,int bitfield_len, char *buff)$/;"	f
+create_cancel_msg	message.c	/^int create_cancel_msg(int index,int begin,int length,char *buff)$/;"	f
 create_chock_interested_msg	message.c	/^int create_chock_interested_msg(int type,char *buff)$/;"	f
 create_handshake_msg	message.c	/^int create_handshake_msg(char *buff, unsigned char *hash, char *peer_id)$/;"	f
 create_have_msg	message.c	/^int create_have_msg(int index, char *buff)$/;"	f
 create_keep_alive_msg	message.c	/^int create_keep_alive_msg(char *buff)$/;"	f
+create_piece_msg	message.c	/^int create_piece_msg(int index,int begin,char *block,int b_len,char *buff)$/;"	f
+create_port_msg	message.c	/^int create_port_msg(int port,char *buff)$/;"	f
 create_request_msg	message.c	/^int create_request_msg(int index,int begin,int length, char *buff)$/;"	f
+del_peer_node	peer.c	/^int del_peer_node(Peer *peer)$/;"	f
+down_count	peer.h	/^    long long      down_count;            $/;"	m	struct:_Peer
+down_rate	peer.h	/^    float          down_rate;             $/;"	m	struct:_Peer
+down_total	peer.h	/^    unsigned int   down_total;            $/;"	m	struct:_Peer
 fd	file_metafile.h	/^	int fd;$/;"	m	struct:_file_down_info
 file_content	file_metafile.c	/^unsigned char *file_content = NULL;$/;"	v
 file_len	file_metafile.h	/^	long file_len;$/;"	m	struct:_file_down_info
@@ -34,17 +66,46 @@ file_name	file_metafile.h	/^	char file_name[60];$/;"	m	struct:_file_down_info
 file_size	file_metafile.c	/^long long file_size = 0;$/;"	v
 filedowninfo	file_metafile.h	/^}filedowninfo;$/;"	t	typeref:struct:_file_down_info
 filedowninfo_head	file_metafile.c	/^filedowninfo *filedowninfo_head = NULL;$/;"	v
+free_peer_node	peer.c	/^void  free_peer_node(Peer *node)$/;"	f
 get_info_hash	file_metafile.c	/^get_info_hash()$/;"	f
 hash	file_metafile.h	/^	char hash[20];$/;"	m	struct:_piece
 host	file_metafile.h	/^    char host[100];$/;"	m	struct:_announce
 http_encode	message.c	/^int http_encode(const unsigned char *dsc, int dsc_len, char *src){$/;"	f
+id	peer.h	/^    char           id[21];                $/;"	m	struct:_Peer
+in_buff	peer.h	/^    char           *in_buff;              $/;"	m	struct:_Peer
+index	peer.h	/^    int     index;                $/;"	m	struct:_Request_piece
 info_hash	file_metafile.c	/^unsigned char info_hash[20];$/;"	v
+initialize_peer	peer.c	/^initialize_peer (Peer *peer)$/;"	f
 int_to_char	message.c	/^int int_to_char(int index,unsigned char *buff)$/;"	f
+ip	peer.h	/^    char           ip[16];                $/;"	m	struct:_Peer
+is_complete_message	message.c	/^int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len)$/;"	f
+last_down_timestamp	peer.h	/^    time_t         last_down_timestamp;   $/;"	m	struct:_Peer
+last_up_timestamp	peer.h	/^    time_t         last_up_timestamp;     $/;"	m	struct:_Peer
+length	peer.h	/^    int     length;               $/;"	m	struct:_Request_piece
 main	main.c	/^int main(){$/;"	f
 message_track	message.c	/^int message_track(announce *announce_node,unsigned char *buff, unsigned char *hash, unsigned char *peer_id, int port, long uploaded, long downloaded,$/;"	f
+msg_copy_index	peer.h	/^    int            msg_copy_index;        $/;"	m	struct:_Peer
+msg_copy_len	peer.h	/^    int            msg_copy_len;          $/;"	m	struct:_Peer
+msg_len	peer.h	/^    int            msg_len;               $/;"	m	struct:_Peer
 next	file_metafile.h	/^	struct _file_down_info *next;$/;"	m	struct:_file_down_info	typeref:struct:_file_down_info::_file_down_info
 next	file_metafile.h	/^    struct _announce *next;$/;"	m	struct:_announce	typeref:struct:_announce::_announce
+next	peer.h	/^    struct _Peer   *next;                 $/;"	m	struct:_Peer	typeref:struct:_Peer::_Peer
+next	peer.h	/^    struct _Request_piece *next;$/;"	m	struct:_Request_piece	typeref:struct:_Request_piece::_Request_piece
+out_msg	peer.h	/^    char           *out_msg;              $/;"	m	struct:_Peer
+out_msg_copy	peer.h	/^    char           *out_msg_copy;         $/;"	m	struct:_Peer
+peer_choking	peer.h	/^    int            peer_choking;          $/;"	m	struct:_Peer
+peer_head	peer.c	/^Peer *peer_head = NULL;$/;"	v
+peer_interested	peer.h	/^    int            peer_interested;       $/;"	m	struct:_Peer
 piece	file_metafile.h	/^}piece;$/;"	t	typeref:struct:_piece
 piece_count	file_metafile.c	/^int piece_count = 0;$/;"	v
 piece_length	file_metafile.c	/^int piece_length = 0;$/;"	v
 piece_list	file_metafile.c	/^piece *piece_list = NULL;$/;"	v
+port	peer.h	/^    unsigned short port;                  $/;"	m	struct:_Peer
+recet_timestamp	peer.h	/^    time_t         recet_timestamp;       $/;"	m	struct:_Peer
+release_memory_in_peer	peer.c	/^void  release_memory_in_peer()$/;"	f
+socket	peer.h	/^    int            socket;                $/;"	m	struct:_Peer
+start_timestamp	peer.h	/^    time_t         start_timestamp;       $/;"	m	struct:_Peer
+state	peer.h	/^    int            state;                 $/;"	m	struct:_Peer
+up_count	peer.h	/^    long long      up_count;              $/;"	m	struct:_Peer
+up_rate	peer.h	/^    float          up_rate;               $/;"	m	struct:_Peer
+up_total	peer.h	/^    unsigned int   up_total;              $/;"	m	struct:_Peer

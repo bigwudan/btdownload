@@ -10,6 +10,11 @@
 
 unsigned char *btmap_list = NULL;
 
+unsigned int bitmap_len = 0;
+unsigned int bitmap_valid_len = 0;
+
+
+
 int btmap_init()
 {
     int len = piece_count/8;
