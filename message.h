@@ -31,4 +31,5 @@ void discard_send_buffer(Peer *peer);
 int process_handshake_msg(Peer *peer,unsigned char *buff,int len);
 
 int process_choke_msg(Peer *peer,unsigned char *buff,int len);
+extern int create_req_slice_msg(Peer *node);
 #endif

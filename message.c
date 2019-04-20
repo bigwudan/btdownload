@@ -8,6 +8,7 @@
 #include "message.h"
 #include "file_metafile.h"
 #include "peer.h"
+#include "btmap.h"
 
 
 
@@ -334,31 +335,53 @@ int process_choke_msg(Peer *peer,unsigned char *buff,int len)
 
 int process_unchoke_msg(Peer *peer,unsigned char *buff,int len)
 {
-
     if(peer==NULL || buff==NULL)  return -1;
     if(peer->state != CLOSING && peer->peer_choking == 1){
         peer->peer_choking = 0;
         if(peer->am_interested == 1){
-        
-            create_req_sle();
-        
+			create_req_slice_msg(peer);
         }else{
-            
-        
+			peer->am_interested = is_interested(peer->bitmap, btmap_list );
+			if(peer->am_interested == 1){
+				create_req_slice_msg(peer);
+			}else{
+				printf("peer->am_interested no\n");		
+			}
         }
-
-
-
-
-    
-    
+		peer->last_down_timestamp = 0;
+		peer->down_count  =0;
+		peer->down_rate = 0;
     }
+	return 0;
+}
+
+int create_req_slice_msg(Peer *node)
+{
+	int index, begin, length = 16*1024;
+	int i, count = 0;
+	if(node == NULL) return -1;
+
+	if(node->am_choking == 1 || node->peer_choking == 1) return -1;
+	Request_piece *p = node->Request_piece_head, *q = NULL;
+
+	while(p){
+		
+		//last
+		p = p->next;
+		if()
+
+	
+	
+	
+	
+	}
+
+
 
 
 
 
 }
-
 
 
 

@@ -73,12 +73,11 @@ extern Peer *peer_head ;
 extern int  initialize_peer (Peer *peer);
 extern Peer* add_peer_node();
 extern int del_peer_node(Peer *peer);
-
 int cancel_request_list(Peer *node);
 int cancel_requested_list(Peer *node);
 void free_peer_node(Peer *node);
 void  release_memory_in_peer();
-
+int process_unchoke_msg(Peer *peer,unsigned char *buff,int len);
 
 
 #endif
