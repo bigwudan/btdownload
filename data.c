@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <fcntl.h>
 
 #include "data.h"
 #include "message.h"
@@ -132,6 +134,109 @@ int create_btcache()
         have_piece_index[i] = -1;
     }
 }
+
+int get_files_count()
+{
+    int count = 0;
+    filedowninfo *head = NULL;
+    head = filedowninfo_head;
+    while(head){
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+int create_files()
+{
+    if(chdir("test") == 0){
+        mkdir("test", 0777);
+        chdir("test");
+    }
+        
+    char buff[1] = { 0x0 };
+
+
+    filedowninfo *head = filedowninfo_head;
+    fds = calloc(get_files_count(), sizeof(int));
+    int i =0;
+
+    while(head){
+            
+        fds[i] = open(head->file_name, O_RDWR|O_CREAT,0777);
+
+        lseek(fds[i], head->file_len-1, SEEK_SET);
+
+        write(fds[i],buff,1);
+        
+        head = head->next;
+
+    }
+    return 1;
+}
+
+int write_btcache_node_to_harddisk(Btcache *node)
+{
+
+    long long     line_position;
+    filedowninfo         *p;
+    int           i;
+
+    if(node == NULL) return 1;
+    line_position = node->index*piece_length + node->begin;
+    int file_count = get_files_count(); 
+    if(file_count == 1){
+        lseek(fds[0], line_position, SEEK_SET);
+        write(fds[0], node->buff, node->length);
+        return 0;
+    }
+
+    p = filedowninfo_head;
+
+    while(1){
+        if(line_position < p->file_len && line_position + node->length < p->file_len ){
+            lseek(p->fd, line_position, SEEK_SET);
+            write(p->fd, node->buff, node->length);
+            break;
+        }else if( line_position < p->file_len && line_position + node->length > p->file_len ){
+            int left = 0;
+            int offset = 0;
+            offset =    p->file_len - line_position;
+            left = node->length - offset;
+            lseek(p->fd, line_position, SEEK_SET);
+            write(p->fd, node->buff+node->begin, offset);
+            i++;
+            p = p->next;
+            while(left <= 0 ){
+                if( left < p->file_len  && left + node->length > p->file_len   ){
+                    write(p->fd, node->buff + node->begin + offset, offset);
+                    left = 0;
+                    break;
+                }else{
+                    write(p->fd, node->buff + node->begin + offset, offset);
+                    left = left - p->file_len;
+                    offset += p->file_len;
+                }
+            }
+        }
+    
+        i++;
+
+    
+
+
+    
+
+
+    
+    
+    }
+
+}
+
+
+
+
 
 
 
