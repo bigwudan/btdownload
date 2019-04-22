@@ -26,6 +26,9 @@ unsigned char info_hash[20];
 
 int piece_length = 0;
 int piece_count = 0;
+int pieces_length = 0;
+
+
 
 
 //读取文件
@@ -196,16 +199,16 @@ file_metafile_get_files_info()
 
 
 	//hask
-	int pieces = 0;
+	int pieces_length = 0;
 	pos_beg = pos_cur;	
 	file_metafile_find_key("6:pieces", pos_beg, &pos_cur);
 	pos_cur += 8;
 
 	while( file_content[pos_cur] != ':' ){
-		pieces = pieces*10 + file_content[pos_cur] - '0';
+		pieces_length = pieces_length*10 + file_content[pos_cur] - '0';
 		pos_cur++;
 	}
-	piece_count = pieces / 20;
+	piece_count = pieces_length / 20;
 	
 	piece_list = calloc(sizeof(piece), piece_count);
 	//skip :

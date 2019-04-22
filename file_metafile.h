@@ -46,6 +46,6 @@ extern unsigned char info_hash[20];
 
 extern int piece_length ;
 extern int piece_count ;
-
+extern int pieces_length;
 
 #endif
