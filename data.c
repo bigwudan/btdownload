@@ -204,35 +204,100 @@ int write_btcache_node_to_harddisk(Btcache *node)
             offset =    p->file_len - line_position;
             left = node->length - offset;
             lseek(p->fd, line_position, SEEK_SET);
-            write(p->fd, node->buff+node->begin, offset);
+            write(p->fd, node->buff, offset);
             i++;
             p = p->next;
             while(left <= 0 ){
                 if( left < p->file_len  && left + node->length > p->file_len   ){
-                    write(p->fd, node->buff + node->begin + offset, offset);
+                    write(p->fd, node->buff  + offset, offset);
                     left = 0;
                     break;
                 }else{
-                    write(p->fd, node->buff + node->begin + offset, offset);
+                    write(p->fd, node->buff  + offset, offset);
                     left = left - p->file_len;
                     offset += p->file_len;
+					p->next;
                 }
             }
-        }
-    
-        i++;
-
-    
-
-
-    
-
-
-    
-    
+        }else{
+			line_position = line_position - p->file_len;
+			p = p->next;
+			i++
+		}
     }
+	return 0;
+}
+
+
+int read_slice_from_harddisk(Btcache *node)
+{
+
+	if(node->index > pieces_length/20 || node->index*piece_length >= file_size  )	 return -1;
+			
+	long long     line_position;
+	filedowninfo         *p;
+	int           i;
+
+	line_position = node->index*piece_length + node->begin;
+
+	p = filedowninfo_head; 
+
+	if( get_files_count() == 1 ){
+		lseek(fds[0], line_position, SEEK_SET );
+		read(fds[0], node->buff, node->length);
+		return 1;
+	}
+
+
+
+	while(1){
+		if( line_position < p->length && line_position + node->length < p->length  ){
+			
+			lseek(fds[i], line_position, SEEK_SET);
+			read(fds[i], node->buff, node->length);
+			return 0;
+		}else if{ line_position < p->length && line_position + node->length > p->length  }{
+			int left  = 0;
+			int offset = 0;
+			offset = p->length - line_position;
+			left = node->length - offset;
+			read(fds[i], node->buff, offset);
+			i++;
+			p = p->next;
+			while(left > 0){
+				if(left < p->length){
+					read(fds[i], node->buff+offset,left );
+					return 0;
+				}else{
+					left = left - p->length;
+					read(fds[i], node->buff+offset, p->length);
+					offset += p->length;
+					i++;
+					p = p->next;
+				}
+			}
+		}else{
+			line_position = line_position - p->length;
+			i++;
+			p = p>next;
+
+
+
+		
+		}	
+	}
+
+
+
+
+
+
+
+
 
 }
+
+
 
 
 

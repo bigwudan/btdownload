@@ -40,7 +40,7 @@ bitmap	peer.h	/^    unsigned char  *bitmap;                $/;"	m	struct:_Peer
 bitmap_len	btmap.c	/^unsigned int bitmap_len = 0;$/;"	v
 bitmap_valid_len	btmap.c	/^unsigned int bitmap_valid_len = 0;$/;"	v
 btcache_head	data.c	/^Btcache *btcache_head = NULL;$/;"	v
-btcache_len	data.c	10;"	d	file:
+btcache_len	data.c	12;"	d	file:
 btmap_get_val	btmap.c	/^int btmap_get_val(int val){$/;"	f
 btmap_init	btmap.c	/^int btmap_init()$/;"	f
 btmap_list	btmap.c	/^unsigned char *btmap_list = NULL;$/;"	v
@@ -54,6 +54,7 @@ create_bitfield_msg	message.c	/^int create_bitfield_msg(char *bitfield,int bitfi
 create_btcache	data.c	/^int create_btcache()$/;"	f
 create_cancel_msg	message.c	/^int create_cancel_msg(int index,int begin,int length,char *buff)$/;"	f
 create_chock_interested_msg	message.c	/^int create_chock_interested_msg(int type,char *buff)$/;"	f
+create_files	data.c	/^int create_files()$/;"	f
 create_handshake_msg	message.c	/^int create_handshake_msg(char *buff, unsigned char *hash, char *peer_id)$/;"	f
 create_have_msg	message.c	/^int create_have_msg(int index, char *buff)$/;"	f
 create_keep_alive_msg	message.c	/^int create_keep_alive_msg(char *buff)$/;"	f
@@ -79,8 +80,10 @@ file_size	file_metafile.c	/^long long file_size = 0;$/;"	v
 filedowninfo	file_metafile.h	/^}filedowninfo;$/;"	t	typeref:struct:_file_down_info
 filedowninfo_head	file_metafile.c	/^filedowninfo *filedowninfo_head = NULL;$/;"	v
 free_peer_node	peer.c	/^void  free_peer_node(Peer *node)$/;"	f
+get_files_count	data.c	/^int get_files_count()$/;"	f
 get_info_hash	file_metafile.c	/^get_info_hash()$/;"	f
 hash	file_metafile.h	/^	char hash[20];$/;"	m	struct:_piece
+have_piece_index	data.c	/^int have_piece_index[64] = {0};$/;"	v
 host	file_metafile.h	/^    char host[100];$/;"	m	struct:_announce
 http_encode	message.c	/^int http_encode(const unsigned char *dsc, int dsc_len, char *src){$/;"	f
 id	peer.h	/^    char           id[21];                $/;"	m	struct:_Peer
@@ -94,18 +97,14 @@ initialize_peer	peer.c	/^initialize_peer (Peer *peer)$/;"	f
 int_to_char	message.c	/^int int_to_char(int index,unsigned char *buff)$/;"	f
 ip	peer.h	/^    char           ip[16];                $/;"	m	struct:_Peer
 is_complete_message	message.c	/^int is_complete_message(unsigned char *buff,unsigned int len,int *ok_len)$/;"	f
-<<<<<<< HEAD
-is_interested	btmap.c	/^int is_interested(char *dst,char *src)$/;"	f
-=======
 is_full	data.h	/^    unsigned char   is_full;      $/;"	m	struct:_Btcache
 is_interested	btmap.c	/^int is_interested(char *dst,char *src)$/;"	f
 is_writed	data.h	/^    unsigned char   is_writed;    $/;"	m	struct:_Btcache
->>>>>>> b3a17ff4eb30f9e3689e6764b45c6d8341d8d6f7
 last_down_timestamp	peer.h	/^    time_t         last_down_timestamp;   $/;"	m	struct:_Peer
 last_piece	data.c	/^Btcache *last_piece = NULL;$/;"	v
+last_piece_count	data.c	/^int last_piece_count = 0;$/;"	v
 last_piece_index	data.c	/^int last_piece_index = 0;$/;"	v
-last_piece_slience_count	data.c	/^int last_piece_slience_count = 0;$/;"	v
-last_slience_lenght	data.c	/^int last_slience_lenght = 0;$/;"	v
+last_slice_len	data.c	/^int last_slice_len = 0;$/;"	v
 last_up_timestamp	peer.h	/^    time_t         last_up_timestamp;     $/;"	m	struct:_Peer
 length	data.h	/^    int             length;       $/;"	m	struct:_Btcache
 length	peer.h	/^    int     length;               $/;"	m	struct:_Request_piece
@@ -134,6 +133,7 @@ process_choke_msg	message.c	/^int process_choke_msg(Peer *peer,unsigned char *bu
 process_handshake_msg	message.c	/^int process_handshake_msg(Peer *peer,unsigned char *buff,int len)$/;"	f
 process_keep_alive_msg	message.c	/^int process_keep_alive_msg(Peer *peer,unsigned char *buff,int len)$/;"	f
 process_unchoke_msg	message.c	/^int process_unchoke_msg(Peer *peer,unsigned char *buff,int len)$/;"	f
+read_write	data.h	/^    unsigned char   read_write;   $/;"	m	struct:_Btcache
 recet_timestamp	peer.h	/^    time_t         recet_timestamp;       $/;"	m	struct:_Peer
 release_last_piece	data.c	/^void release_last_piece()$/;"	f
 release_memory_in_btcache	data.c	/^void release_memory_in_btcache()$/;"	f
@@ -144,3 +144,4 @@ state	peer.h	/^    int            state;                 $/;"	m	struct:_Peer
 up_count	peer.h	/^    long long      up_count;              $/;"	m	struct:_Peer
 up_rate	peer.h	/^    float          up_rate;               $/;"	m	struct:_Peer
 up_total	peer.h	/^    unsigned int   up_total;              $/;"	m	struct:_Peer
+write_btcache_node_to_harddisk	data.c	/^int write_btcache_node_to_harddisk(Btcache *node)$/;"	f
