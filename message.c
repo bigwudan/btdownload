@@ -363,18 +363,92 @@ int create_req_slice_msg(Peer *node)
 
 	if(node->am_choking == 1 || node->peer_choking == 1) return -1;
 	Request_piece *p = node->Request_piece_head, *q = NULL;
+	if(p){
+		while(p){
+			p = p->next;
+		}	
+		begin = piece_length - 16*1024;
+		if(p->index == last_piece_index){
+			if( p->begin == length -  last_slice_len){
+				count = last_slice_len;
+			}else{
+				count = 16*1024;	
+			}	
+			q = calloc(sizeof(Request_piece), 1);
+			q->index = p->index;
+			q->begin = begin;
+			q->length = count;
+			p->next = q;
+			create_request_msg(q->index, q->begin, q->length, node->out_msg);
+			return 1;
+		}
+		q = calloc(sizeof(Request_piece), 1);
+		q->index = p->index;
+		q->begin = begin+16*1024;
+		q->length = length;
+		p->next = q;
+		create_request_msg(q->index, q->begin, q->length, node->out_msg);
+		return 1;
+	}
 
-	while(p){
-		
-		//last
-		p = p->next;
-		if()
 
-	
-	
-	
+    char t_dst = 0;
+    char t_src= 0;
+    char p[] = {0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80};
+	int find = 0;
+	int find_1 = 0;
+	for( int i =0; i < bitmap_len; i++  ){
+		t_dst = node->bitmap[i];
+		t_src = btmap_list[i];
+		for(int j = 0; j < 8; j++){
+			count++;
+            if(  ((t_dst & p[j]) > 0 ) && ((t_src & p[j]) == 0)    ){
+				find_1 = 0;
+				Peer *tmp = peer_head;
+				while(tmp){
+					Request_piece *tmp_req = tmp->Request_piece_head;
+					while(tmp_req){
+						if(tmp_req->index == count){
+							find_1 = 1;
+							break;
+						}
+						tmp_req = tmp_req->next;
+					}
+					if(find_1 == 1) break;
+					tmp = tmp->next;
+				}
+            }
+		}
+		if(find_1 == 0 ){
+			
+			find = 1;
+			break;
+		}
 	
 	}
+	if(find == 0){
+		return 0;
+	}
+	Request_piece *t = node->Request_piece_head;	
+	while(t->next) t = t->next;	
+	for(int i = 0; i < 4; i++){
+		q = calloc(sizeof(Request_piece), 1);
+		q->index = count;
+		q->begin = length*i;
+		q->length = length;
+		t->next = q;
+		create_request_msg(q->index, q->begin, q->length, node->out_msg);
+		t = q;
+	}
+
+
+
+	return 0;
+
+
+
+
+
 
 
 

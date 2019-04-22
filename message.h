@@ -32,4 +32,12 @@ int process_handshake_msg(Peer *peer,unsigned char *buff,int len);
 
 int process_choke_msg(Peer *peer,unsigned char *buff,int len);
 extern int create_req_slice_msg(Peer *node);
+
+extern int last_piece_index;
+extern int last_piece_count;
+extern int piece_length;
+extern int last_slice_len;
+
+
+
 #endif
