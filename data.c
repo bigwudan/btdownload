@@ -317,7 +317,6 @@ int delete_request_end_mode(int index)
 
 int write_piece_to_harddisk(int sequnce,Peer *peer)
 {
-
     Btcache        *node_ptr = btcache_head, *p;
     unsigned char  piece_hash1[20], piece_hash2[20];
     int            slice_count = piece_length / (16*1024);
