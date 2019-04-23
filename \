@@ -286,37 +286,9 @@ int read_slice_from_harddisk(Btcache *node)
 		
 		}	
 	}
-}
 
 
-int delete_request_end_mode(int index)
-{
-    Peer          *p = peer_head;
-    Request_piece *req_p, *req_q;
-    if(index < 0 || index >= pieces_length/20)  return -1;
-    while(p){
-        req_p = p->Request_piece_head;
-        while(req_p){
-            req_q = req_p;
-            if(req_p->index == index){
-                if(p->Request_piece_head == req_p){
-                    p->Request_piece_head = req_p->next;
-                }else{
-                    req_q->next = req_p->next;
-                }
-                free(req_p);
-                req_p = p->Request_piece_head;
-                continue;
-            }
-            req_p = req_p->next;
-        }
-        p = p->next;
-    }
-}
 
-
-int write_piece_to_harddisk(int sequnce,Peer *peer)
-{
 
 
 
@@ -324,6 +296,10 @@ int write_piece_to_harddisk(int sequnce,Peer *peer)
 
 
 }
+
+
+
+
 
 
 
