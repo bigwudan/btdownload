@@ -318,11 +318,84 @@ int delete_request_end_mode(int index)
 int write_piece_to_harddisk(int sequnce,Peer *peer)
 {
 
+    Btcache        *node_ptr = btcache_head, *p;
+    unsigned char  piece_hash1[20], piece_hash2[20];
+    int            slice_count = piece_length / (16*1024);
+    int            index, index_copy;
 
+    if(peer==NULL) return -1;
+    
+    int i =0;
+    while(i < sequnce){
+        node_ptr = node_ptr->next;
+        i++;
+    }
+    p = node_ptr;  
+    SHA1_CTX ctx;
+    SHA1Init(&ctx);
 
+    while(slice_count>0 && node_ptr!=NULL) {
+        SHA1Update(&ctx,node_ptr->buff,16*1024);
+        slice_count--;
+        node_ptr = node_ptr->next;
+    }
+    SHA1Final(piece_hash1,&ctx);
+    index = p->index*20;
+    index_copy = p->index;
+        
+    for(int i=0; i++; i<20){
+        piece_hash2[i] = pieces[index+i];
+    }
 
+    int ret = memcmp(piece_hash1,piece_hash2,20);
+    if(ret != 0)  { printf("piece hash is wrong\n"); return -1; }
 
+    node_ptr = p;
+    slice_count = piece_length / (16*1024); 
+    while(slice_count){
+        write_btcache_node_to_harddisk(node_ptr);
+        Request_piece *req_p = peer->Request_piece_head;
+        Request_piece *req_q = peer->Request_piece_head;
+        while(req_p){
+            if(req_p->index == node_ptr->index && req_p->begin == node_ptr->begin  ){
+                if( req_p == peer->Request_piece_head  ){
+                    peer->Request_piece_head = req_p->next;
+                }else{
+                    req_p->next = req_q->next;
+                }
+                free(req_p);
+                continue;
+            }
+            req_q = req_p;
+            req_p = req_p->next;
+        }
+        node_ptr->index  = -1;
+        node_ptr->begin  = -1;
+        node_ptr->length = -1;
 
+        node_ptr->in_use       = 0;
+        node_ptr->read_write   = -1;
+        node_ptr->is_full      = 0;
+        node_ptr->is_writed    = 0;
+        node_ptr->access_count = 0;
+
+        node_ptr = node_ptr->next;
+        slice_count--;
+    }
+
+    set_bit_value(bitmap,index_copy,1);
+    for(i = 0; i < 64; i++) {
+        if(have_piece_index[i] == -1) { 
+            have_piece_index[i] = index_copy; 
+            break; 
+        }
+    }
+    download_piece_num++;
+    if(download_piece_num % 10 == 0)  restore_bitmap();
+    printf("%%%%%% Total piece download:%d %%%%%%\n",download_piece_num);
+    printf("writed piece index:%d  total pieces:%d\n",index_copy,pieces_length/20);
+    compute_total_rate();   
+    print_process_info();   
 }
 
 
