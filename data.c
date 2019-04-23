@@ -397,6 +397,72 @@ int write_piece_to_harddisk(int sequnce,Peer *peer)
     print_process_info();   
 }
 
+int read_piece_from_harddisk(Btcache *p, int index)
+{
+	Btcache  *node_ptr   = p;
+	int      begin       = 0;
+	int      length      = 16*1024;
+	int      slice_count = piece_length / (16*1024);
+	int      ret;
+
+	if(p==NULL || index>=pieces_length/20)  return -1;
+
+	while(slice_count > 0) {
+		node_ptr->index  = index;
+		node_ptr->begin  = begin;
+		node_ptr->length = length;
+		ret = read_slice_from_harddisk(node_ptr);
+		if(ret < 0) return -1;
+		node_ptr->in_use       = 1;
+		node_ptr->read_write   = 0;
+		node_ptr->is_full      = 1;
+		node_ptr->is_writed    = 0;
+		node_ptr->access_count = 0;
+
+		begin += 16*1024;
+		slice_count--;
+		node_ptr = node_ptr->next;
+	}
+
+	return 0;
+}
+
+int write_btcache_to_harddisk(Peer *peer)
+{
+	
+	Btcache          *p = btcache_head;
+	int     slice_count = piece_length / (16*1024);
+	int     index_count = 0;
+	int      full_count = 0;
+	int     first_index;
+
+	while(p != NULL) {
+		if(index_count % slice_count == 0) {
+			full_count = 0;
+			first_index = index_count;
+		}
+
+		if( (p->in_use  == 1) && (p->read_write == 1) && 
+				(p->is_full == 1) && (p->is_writed  == 0) ) {
+			full_count++;
+		}
+
+		if(full_count == slice_count) {
+			write_piece_to_harddisk(first_index,peer);
+		}
+
+		index_count++;
+		p = p->next;
+	}
+
+	return 0;
+
+
+
+}
+
+
+
 
 
 

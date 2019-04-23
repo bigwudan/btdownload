@@ -63,6 +63,7 @@ create_port_msg	message.c	/^int create_port_msg(int port,char *buff)$/;"	f
 create_req_slice_msg	message.c	/^int create_req_slice_msg(Peer *node)$/;"	f
 create_request_msg	message.c	/^int create_request_msg(int index,int begin,int length, char *buff)$/;"	f
 del_peer_node	peer.c	/^int del_peer_node(Peer *peer)$/;"	f
+delete_request_end_mode	data.c	/^int delete_request_end_mode(int index)$/;"	f
 discard_send_buffer	message.c	/^void discard_send_buffer(Peer *peer)$/;"	f
 down_count	peer.h	/^    long long      down_count;            $/;"	m	struct:_Peer
 down_rate	peer.h	/^    float          down_rate;             $/;"	m	struct:_Peer
@@ -133,6 +134,8 @@ process_choke_msg	message.c	/^int process_choke_msg(Peer *peer,unsigned char *bu
 process_handshake_msg	message.c	/^int process_handshake_msg(Peer *peer,unsigned char *buff,int len)$/;"	f
 process_keep_alive_msg	message.c	/^int process_keep_alive_msg(Peer *peer,unsigned char *buff,int len)$/;"	f
 process_unchoke_msg	message.c	/^int process_unchoke_msg(Peer *peer,unsigned char *buff,int len)$/;"	f
+read_piece_from_harddisk	data.c	/^int read_piece_from_harddisk(Btcache *p, int index)$/;"	f
+read_slice_from_harddisk	data.c	/^int read_slice_from_harddisk(Btcache *node)$/;"	f
 read_write	data.h	/^    unsigned char   read_write;   $/;"	m	struct:_Btcache
 recet_timestamp	peer.h	/^    time_t         recet_timestamp;       $/;"	m	struct:_Peer
 release_last_piece	data.c	/^void release_last_piece()$/;"	f
@@ -145,3 +148,4 @@ up_count	peer.h	/^    long long      up_count;              $/;"	m	struct:_Peer
 up_rate	peer.h	/^    float          up_rate;               $/;"	m	struct:_Peer
 up_total	peer.h	/^    unsigned int   up_total;              $/;"	m	struct:_Peer
 write_btcache_node_to_harddisk	data.c	/^int write_btcache_node_to_harddisk(Btcache *node)$/;"	f
+write_piece_to_harddisk	data.c	/^int write_piece_to_harddisk(int sequnce,Peer *peer)$/;"	f
